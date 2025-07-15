@@ -156,7 +156,34 @@ seatunnel:
           fs.s3a.aws.credentials.provider: org.apache.hadoop.fs.s3a.InstanceProfileCredentialsProvider
 ```
 
+
+如果您使用支持S3协议的Minio作为检查点存储，您可以这样进行配置。
+
+```yaml
+
+seatunnel:
+  engine:
+    checkpoint:
+      interval: 10000
+      timeout: 60000
+      storage:
+        type: hdfs
+        max-retained: 3
+        plugin-config:
+          storage.type: s3
+          fs.s3a.access.key: xxxxxxxxx #  MinIO 访问密钥  
+          fs.s3a.secret.key: xxxxxxxxxxxxxxxxxxxxx #  MinIO 密钥
+          fs.s3a.endpoint: http://127.0.0.1:9000 # Minio HTTP 服务访问地址
+          s3.bucket: s3a://test  # 存储检查点的桶的名字为test
+          fs.s3a.aws.credentials.provider: org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider
+          # 注意：访问用户需要有桶的写权限，否则会403报错
+```
+
+
 有关Hadoop Credential Provider API的更多信息，请参见: [Credential Provider API](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/CredentialProviderAPI.html).
+
+
+
 
 #### HDFS
 
